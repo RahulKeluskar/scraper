@@ -95,25 +95,25 @@ class Scraper:
     def execute_aws_scraper(self):
         pass
 
-    def scrape_aws(self):
+    def scrape_aws_cheatsheet(self):
+        """
+        URL used by this function -> https://www.bluematador.com/learn/aws-cli-cheatsheet
+        This function scrapes the aws cheatsheet and generates a dictionary with the comment and command for aws commands
+        This dictionary is then written into a file
+
+        TODO -> This function as of now takes a single url as reference, we need to create these functions in some generic way \
+                such that we can reuse this function for any cheat sheet as ultimately the building blocks must be the same
+                The basic idea can be like -> We can provide how to identify the code and comment and scraper does the rest the same but for those patterns
+        :return:
+        """
         r = requests.get(self.url)
         soup = BeautifulSoup(r.content,
                              'html5lib')
-        commands = []
-        comments = []
         properties = {
             "id": "hs_cos_wrapper_module_1588089319145250"
         }
         main_div = soup.find('div', properties)
-
-        # print(main_div)
         children = main_div.findChildren()
-        # print([child.has_attr('class') and 'language-json' in child['class'] for child in children])
-        filtered = [i.renderContents().decode("utf-8") for i in filter(filter_command_codes, children)]
-        print(len(filtered))
-        header_found_flag = False
-        code_found_flag = False
-        comment_found_flag = False
 
         final_data = {}
         current_header = ''
@@ -122,13 +122,11 @@ class Scraper:
             if is_header(children[i]):
                 current_header = children[i].text
                 final_data[current_header] = {}
-            # We find a header than keep checking for comment and code until the next header is found
             if is_code(children[i]):
                 final_data[current_header][current_comment] = children[i].renderContents().decode("utf-8")
             if is_comment(children[i]):
                 current_comment = children[i].text
                 final_data[current_header][current_comment] = ''
-                # for comment append to comment data structure
         f = open("aws-cli.txt", "w")
         for i, j in final_data.items():
             print('Header = {}'.format(i))
@@ -136,8 +134,8 @@ class Scraper:
                 comment = "{}: {}".format(i, k)
                 f.write('{} {}\n'.format("#", comment))
                 command = ''.join(l)
-                f.write(command+'\n')
+                f.write(command + '\n')
+
 
 obj = Scraper("https://www.bluematador.com/learn/aws-cli-cheatsheet", "")
-obj.scrape_aws()
-# https://www.bluematador.com/learn/aws-cli-cheatsheet
+obj.scrape_aws_cheatsheet()
