@@ -129,7 +129,6 @@ class Scraper:
                 final_data[current_header][current_comment] = ''
         f = open("aws-cli.txt", "a")
         for i, j in final_data.items():
-            print('Header = {}'.format(i))
             for k, l in j.items():
                 comment = "{}: {}".format(i, k)
                 f.write('{} {}\n'.format("#", comment))
