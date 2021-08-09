@@ -127,7 +127,7 @@ class Scraper:
             if is_comment(children[i]):
                 current_comment = children[i].text
                 final_data[current_header][current_comment] = ''
-        f = open("aws-cli.txt", "w")
+        f = open("aws-cli.txt", "a")
         for i, j in final_data.items():
             print('Header = {}'.format(i))
             for k, l in j.items():
