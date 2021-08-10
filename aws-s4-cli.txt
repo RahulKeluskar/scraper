@@ -1,0 +1,157 @@
+# s3 make bucket (create bucket)
+aws s3 mb s3://tgsbucket --region us-west-2
+
+# s3 remove bucket
+aws s3 rb s3://tgsbucket
+aws s3 rb s3://tgsbucket --force
+
+# s3 ls commands
+aws s3 ls
+aws s3 ls s3://tgsbucket
+aws s3 ls s3://tgsbucket --recursive
+aws s3 ls s3://tgsbucket --recursive  --human-readable --summarize
+
+# s3 cp commands
+aws s3 cp getdata.php s3://tgsbucket
+aws s3 cp /local/dir/data s3://tgsbucket --recursive
+aws s3 cp s3://tgsbucket/getdata.php /local/dir/data
+aws s3 cp s3://tgsbucket/ /local/dir/data --recursive
+aws s3 cp s3://tgsbucket/init.xml s3://backup-bucket
+aws s3 cp s3://tgsbucket s3://backup-bucket --recursive
+
+# s3 mv commands
+aws s3 mv source.json s3://tgsbucket
+aws s3 mv s3://tgsbucket/getdata.php /home/project
+aws s3 mv s3://tgsbucket/source.json s3://backup-bucket
+aws s3 mv /local/dir/data s3://tgsbucket/data --recursive
+aws s3 mv s3://tgsbucket s3://backup-bucket --recursive
+
+# s3 rm commands
+aws s3 rm s3://tgsbucket/queries.txt
+aws s3 rm s3://tgsbucket --recursive
+
+# s3 sync commands
+aws s3 sync backup s3://tgsbucket
+aws s3 sync s3://tgsbucket/backup /tmp/backup
+aws s3 sync s3://tgsbucket s3://backup-bucket
+
+# s3 bucket website
+aws s3 website s3://tgsbucket/ --index-document index.html --error-document error.html
+
+# s3 presign url (default 3600 seconds)
+aws s3 presign s3://tgsbucket/dnsrecords.txt
+aws s3 presign s3://tgsbucket/dnsrecords.txt --expires-in 60
+
+# create new s3 bucket
+aws s3 mb s3://tgsbucket
+
+# Create New S3 Bucket – Different Region
+aws s3 mb s3://tgsbucket --region us-west-2
+
+# Delete S3 Bucket (That is empty)
+aws s3 rb s3://tgsbucket
+
+# Delete S3 Bucket (And all its objects)
+aws s3 rb s3://tgsbucket --force
+
+# List All S3 Buckets
+aws s3 ls
+
+# List All S3 Buckets (equivalent command)
+aws s3 ls s3://
+
+# List All Objects in a Bucket
+aws s3 ls s3://tgsbucket
+
+# List all Objects in a Bucket Recursively
+aws s3 ls s3://tgsbucket --recursive
+
+# Total Size of All Objects in a S3 Bucket
+aws s3 ls s3://tgsbucket --recursive  --human-readable --summarize
+
+# Request Payer Listing
+aws s3 ls s3://tgsbucket --recursive --request-payer requester
+
+# Copy Local File to S3 Bucket
+aws s3 cp getdata.php s3://tgsbucket
+
+# ^ alternative: copy the getdata.php to a S3 bucket with a different name
+aws s3 cp getdata.php s3://tgsbucket/getdata-new.php
+
+# ^ for the local file, you can also specify the full path
+aws s3 cp /home/project/getdata.php s3://tgsbucket
+
+# Copy Local Folder with all Files to S3 Bucket
+aws s3 cp data s3://tgsbucket --recursive
+
+# ^ upload the data folder from local to s3 bucket as data folder, then specify the folder name after the bucket name
+aws s3 cp data s3://tgsbucket/data --recursive
+
+# Download a File from S3 Bucket
+aws s3 cp s3://tgsbucket/getdata.php .
+
+# ^ download the file to the local machine with in a different name
+aws s3 cp s3://tgsbucket/getdata.php getdata-local.php
+
+# Download the file from S3 bucket to a specific folder in local machine
+aws s3 cp s3://tgsbucket/getdata.php /home/project/
+
+# Download All Files Recursively from a S3 Bucket (Using Copy)
+aws s3 cp s3://tgsbucket/ . --recursive
+
+# download all the files from a S3 bucket to a specific folder locally with specified the full path
+aws s3 cp s3://tgsbucket/ /home/projects/tgsbucket --recursive
+
+# Copy a File from One Bucket to Another Bucket
+aws s3 cp s3://tgsbucket/config/init.xml s3://backup-bucket
+
+# ^ copy the same folder from source and destination along with the file, specify the folder name in the desintation bucket
+aws s3 cp s3://tgsbucket/config/init.xml s3://backup-bucket/config
+
+# Copy All Files Recursively from One Bucket to Another
+aws s3 cp s3://tgsbucket s3://backup-bucket --recursive
+
+# Move a File from Local to S3 Bucket
+aws s3 mv source.json s3://tgsbucket
+
+# Move a File from S3 Bucket to Local
+aws s3 mv s3://tgsbucket/getdata.php /home/project
+
+# Move a File from One S3 Bucket to Another S3 Bucket
+aws s3 mv s3://tgsbucket/source.json s3://backup-bucket
+
+# Move All Files from a Local Folder to S3 Bucket
+aws s3 mv data s3://tgsbucket/data --recursive
+
+# Move All Files from S3 Bucket to Local Folder
+aws s3 mv s3://tgsbucket/data/ localdata --recursive
+
+# Move All Files from One S3 Bucket to Another S3 Bucket
+aws s3 mv s3://tgsbucket s3://backup-bucket --recursive
+
+# Delete a File from S3 Bucket
+aws s3 rm s3://tgsbucket/queries.txt
+
+# Delete All Objects from S3 buckets
+aws s3 rm s3://tgsbucket
+
+# Sync files from Laptop to S3 Bucket
+aws s3 sync backup s3://tgsbucket
+
+# sync it to a subfolder called backup on the S3 bucket, then include the folder name in the s3 bucket
+aws s3 sync backup s3://tgsbucket/backup
+
+# Sync File from S3 bucket to Local
+aws s3 sync s3://tgsbucket/backup /tmp/backup
+
+# Sync Files from one S3 Bucket to Another S3 Bucket
+aws s3 sync s3://tgsbucket s3://backup-bucket
+
+# Set S3 bucket as a website
+aws s3 website s3://tgsbucket/ --index-document index.html --error-document error.html
+
+# Presign URL of S3 Object for Temporary Access
+aws s3 presign s3://tgsbucket/dnsrecords.txt
+
+# ^ The following will create a presigned URL that is valid only for 1 minute
+aws s3 presign s3://tgsbucket/dnsrecords.txt --expires-in 60
